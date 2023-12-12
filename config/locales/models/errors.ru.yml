@@ -1,0 +1,12 @@
+ru:
+  activerecord:
+    errors:
+      messages:
+        required: "Заполните обязательное поле"
+        inclusion: "%{attribute} Некорректное значение"
+        blank: "%{attribute} не может быть пустым"
+        taken: "%{attribute} не уникален"
+        record_invalid: "Возникли ошибки: %{errors}"
+        restrict_dependent_destroy:
+          has_one: "Невозможно удалить запись, так как существует зависимость: %{record}"
+          has_many: "Невозможно удалить запись, так как существуют зависимости: %{record}"

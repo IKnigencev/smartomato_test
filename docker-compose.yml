@@ -1,0 +1,45 @@
+version: '3'
+
+services:
+  smartomato_order_redis:
+    image: "redis:alpine"
+    expose:
+      - 6385
+    stdin_open: true
+    tty: true
+  smartomato_order_db:
+    image: "postgres:16-alpine"
+    command: -p 5433
+    expose:
+      - "5433"
+    ports:
+      - "5433:5433"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=smartomato_order_db
+      - POSTGRES_PASSWORD=password
+  smartomato_order:
+    restart: always
+    depends_on:
+      - smartomato_order_db
+      - smartomato_order_redis
+    volumes:
+      - .:/app:cached
+      - gem_cache:/gems
+    build: .
+    entrypoint: ./docker-entrypoint.sh
+    ports:
+      - "3005:3005"
+    environment:
+      RAILS_ENV: development
+      DB_HOST: smartomato_order_db
+      DB_PORT: 5433
+      DB_USER: smartomato_order_db
+      DB_PASSWORD: password
+      REDIS_PORT: 6385
+      REDIS_HOST: smartomato_order_redis
+
+volumes:
+  gem_cache:
+  db_data:

@@ -1,0 +1,6 @@
+<%= link_to web_order_url(order.id) do %>
+    <div class="w-1/2 p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"><%= "ID: #{order.id}. Заказ клиента: #{order.user_name}." %></h5>
+        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400"><%= content_tag(:span, "Статус заказа: #{order.human_status}.", style: "color: green;") %> <%= "Дата создания: #{order.created_at}" %></p>
+    </div>
+<% end %>

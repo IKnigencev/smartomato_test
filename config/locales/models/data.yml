@@ -1,0 +1,8 @@
+ru:
+  models:
+    data:
+      order:
+        init: Новый заказ
+        start: Начало оплаты
+        error: Ошибка оплаты
+        finish: Оплачен
