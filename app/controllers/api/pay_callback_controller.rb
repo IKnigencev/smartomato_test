@@ -15,11 +15,9 @@ module Api
       # успешная или не успешная оплата
       #
       define_method type_callback do
-        result = ::Api::Pays::Callback.new(
-          order: order, type: type_callback
-        ).call
-        if result.success?
-          redirect_to success_redirect_page(type_callback)
+        @type_callback = type_callback
+        if callback_service.call.success?
+          redirect_to success_redirect_page
         else
           redirect_to web_unknown_error_path
         end
@@ -28,30 +26,31 @@ module Api
 
     private
       def callback_params
-        params.permit(:orderId)
+        params.permit(:mdOrder, :orderNumber, :operation, :callbackCreationDate, :status)
       end
 
       ##
-      # Поиск заказа по orderId, который сохранили при отправке на оплату
+      # Поиск заказа по orderNumber, который сохранили при отправке на оплату
       #
       # @return [Order]
       #
       def find_order
-        # https://myshop.ru/callback/?mdOrder=1234567890-098776-234-522&orderNumber=0987&operation=deposited&callbackCreationDate=Mon Jan 31 21:46:52 MSK 2022&status=0
-        @order = ::Order.find_by!(
-          metadata: { orderId: callback_params[:orderId] }
+        @order = ::Order.find(callback_params[:orderNumber])
+      end
+
+      def callback_service
+        @callback_service ||= ::Api::Pays::SberOrderCallbackOperation.new(
+          order: @order, type: @type_callback, params: callback_params
         )
       end
 
       ##
       # URL страница после оплаты
       #
-      # @param [Symbol] type
-      #
       # @return [String]
       #
-      def success_redirect_page(type)
-        if type == :successful
+      def success_redirect_page
+        if callback_service.finish_pay?
           success_web_pay_path(@order.id)
         else
           failure_web_pay_path(@order.id)

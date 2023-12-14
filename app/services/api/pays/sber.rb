@@ -9,7 +9,7 @@ module Api
       module_function
 
       BASE_URL = "https://3dsec.sberbank.ru"
-      ORDER_REGISTER = "%<base_url>s/payment/rest/register.do"
+      ORDER_REGISTER = "%<base_url>s/payment/rest/register.do/"
 
       ##
       # Базовый url для отправки запросов на сбер

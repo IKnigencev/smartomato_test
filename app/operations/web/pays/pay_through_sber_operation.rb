@@ -20,14 +20,18 @@ module Web
         result = request_to_sber
         return Failure.new(key: :request_error) unless result.success?
 
-        order.status = :start if order.status != "start"
-        order.metadata = { orderId: result.value![:orderId] }
-        order.save!
+        update_order!(result)
         Success.new(redirect_url: result.value![:formUrl])
       end
     end
 
     private
+      def update_order!(result)
+        order.status = :start if order.status != "start"
+        order.metadata = result.value!
+        order.save!
+      end
+
       ##
       # Отправка запроса в Сбербанк на оплату
       #
@@ -56,8 +60,6 @@ module Web
       def errors_cath(&block)
         block.call
       rescue Exception => e
-        puts e.inspect
-        puts e.backtrace
         DevelopmentMailer.unknown_error(e)
         Failure.new(key: :unknown_error)
       end

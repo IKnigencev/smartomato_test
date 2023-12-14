@@ -6,7 +6,7 @@
 class Order < ApplicationRecord
   include OrderStatuses
   has_many :order_line, dependent: :destroy
-  validates :status, inclusion: { in: avaliable_statuses }
+  validates :user_name, :phone, :email, :address, :total, presence: true
   # новый, начата оплата, ошибка оплаты, оплачен
   enum :status, hash_statuses
 

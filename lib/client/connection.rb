@@ -8,7 +8,7 @@ module Client::Connection
 
   def call
     @conn = build_connection
-    response = send_request
+    response = catch_exceptions { send_request }
     raise Invalid.new(
       {
         status: response.status,
@@ -84,7 +84,7 @@ module Client::Connection
       }
     end
 
-    def catch_exceptions
+    def catch_exceptions(&block)
       block.call
     rescue Faraday::ClientError, Faraday::ServerError => e
       catched_faraday_exceptions(e)
@@ -92,6 +92,6 @@ module Client::Connection
 
     def catched_faraday_exceptions(err)
       DevelopmentMailer.some_errors(err).deliver_later
-      raise Invalid, err.inspect
+      raise Client::Errors::Invalid, err.inspect
     end
 end

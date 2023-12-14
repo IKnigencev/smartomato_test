@@ -17,7 +17,6 @@ RSpec.configure do |config|
   config.infer_spec_type_from_file_location!
   config.filter_rails_from_backtrace!
 
-  config.include ControllerMacros, type: :controller
   config.before(:example, type: :controller) do
     add_json_content_type
   end

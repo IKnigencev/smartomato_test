@@ -22,7 +22,9 @@ module Api
         return Failure.new(key: :empty_body) if body.blank?
 
         validate_body(body)
-      rescue ::Client::Errors::Invalid
+      rescue ::Client::Errors::Invalid => e
+        puts "Invalid"
+        puts e.class.name
         Failure.new(key: :something_went_wrong)
       end
 
@@ -73,7 +75,7 @@ module Api
           # Отправляем пиисьмо для просмотра что не так
           DevelopmentMailer.some_errors(body).deliver_later
           Failure.new(
-            key: :error_code, data: body[:errorCode]
+            key: :error_code, data: body
           )
         end
     end
