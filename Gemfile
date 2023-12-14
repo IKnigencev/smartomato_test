@@ -20,8 +20,14 @@ gem "dry-validation"
 gem "tailwindcss-rails"
 
 gem "faraday"
+gem "faraday-multipart"
+gem "faraday-retry"
+
+gem "jsonapi-serializer"
 
 gem "pg", "~> 1.1"
+
+gem "whenever"
 
 group :development, :test do
   gem "bullet"

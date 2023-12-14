@@ -24,6 +24,7 @@ module SmartomatoTest
     config.autoload_lib(ignore: %w(assets tasks))
 
     config.eager_load_paths << Rails.root.join("services")
+    config.eager_load_paths << Rails.root.join("serializers")
 
     config.i18n.default_locale = :ru
   end

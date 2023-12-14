@@ -11,4 +11,9 @@ class DevelopmentMailer < ApplicationMailer
     @error = error
     mail(to: "dev@gmail.com", subject: "Exception")
   end
+
+  def some_errors(error)
+    @error = error
+    mail(to: "dev@gmail.com", subject: "Some Error")
+  end
 end

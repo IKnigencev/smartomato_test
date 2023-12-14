@@ -18,12 +18,14 @@ module Web
     end
 
     def unknown_error(err)
+      puts err.inspect
+      puts err.backtrace
       DevelopmentMailer.unknown_error(err)
-      render "errors/500"
+      redirect_to web_unknown_error_path
     end
 
     def not_found
-      render "errors/404"
+      redirect_to web_not_found_path
     end
   end
 end

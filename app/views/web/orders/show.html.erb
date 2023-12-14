@@ -1,0 +1,37 @@
+<% if flash.present? %>
+    <%= render partial: "partials/web/flash" %>
+<% end %>
+<h1 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"><%= "ID: #{@order.id}. Заказ клиента: #{@order.user_name}." %></h1>
+<div>
+    <div style="vertical-align: middle;">
+        <dl class="max-w-md text-gray-900 divide-y divide-gray-200 dark:text-white dark:divide-gray-700">
+            <div class="flex flex-col pb-3">
+                <dt class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Имя пользователя</dt>
+                <dd class="text-lg font-semibold"><%= @order.user_name %></dd>
+            </div>
+            <div class="flex flex-col py-3">
+                <dt class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Номер телефона</dt>
+                <dd class="text-lg font-semibold"><%= @order.phone %></dd>
+            </div>
+            <div class="flex flex-col pt-3">
+                <dt class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Почта</dt>
+                <dd class="text-lg font-semibold"><%= @order.email %></dd>
+            </div>
+            <div class="flex flex-col pt-3">
+                <dt class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Адрес</dt>
+                <dd class="text-lg font-semibold"><%= @order.address %></dd>
+            </div>
+            <div class="flex flex-col pt-3">
+                <dt class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Статус заказа</dt>
+                <dd class="text-lg font-semibold"><%= @order.human_status %></dd>
+            </div>
+        </dl>
+    </div>
+    <div stype="vertical-align: middle;">
+        <%= button_to "Оплатить", web_pays_path, params: { id: @order.id } %>
+    </div>
+</div>
+<div class="grid place-items-center h-screen">
+    <h2 class="mb-2 text-lg font-semibold text-gray-900 dark:text-white">Список товаров:</h2>
+    <%= render partial: "web/orders/order_line", collection: @order.order_line %>
+</div>

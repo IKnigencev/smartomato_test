@@ -11,4 +11,6 @@ RAILS_ENV=development bin/rails db:create
 RAILS_ENV=development bin/rails db:migrate
 RAILS_ENV=development bin/rails db:seed
 
+cron && bundle exec whenever --set 'environment=development' --update-crontab
+
 bin/rails s -b 0.0.0.0 -p 3005
