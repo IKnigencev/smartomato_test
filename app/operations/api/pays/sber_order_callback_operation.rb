@@ -56,7 +56,7 @@ module Api
       rescue Exception => e
         puts e.inspect
         puts e.backtrace
-        DevelopmentMailer.unknown_error(e)
+        DevelopmentMailer.unknown_error(e).deliver_later
         Failure.new(key: :unknown_error)
       end
   end
