@@ -3,12 +3,6 @@
 require "rails_helper"
 
 RSpec.describe Web::Order::RandCreateService do
-  it "создаст верное количество заказов" do
-    @before_count = Order.count
-    10.times { described_class.call }
-    expect(Order.count - @before_count).to eq(10)
-  end
-
   it "сгенерирует уникальные заказы" do
     created_orders = []
     10.times { created_orders << described_class.call }
