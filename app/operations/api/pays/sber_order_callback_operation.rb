@@ -38,7 +38,7 @@ module Api
     private
       def update_order!
         order.status = status_order
-        order.metadata = order.metadata.merge(*params.slice(:orderNumber, :operation, :callbackCreationDate, :status))
+        order.metadata = order.metadata.merge(**params.slice(:orderNumber, :operation, :callbackCreationDate, :status))
         order.save!
       end
 
@@ -54,8 +54,6 @@ module Api
       def errors_cath(&block)
         block.call
       rescue Exception => e
-        puts e.inspect
-        puts e.backtrace
         DevelopmentMailer.unknown_error(e).deliver_later
         Failure.new(key: :unknown_error)
       end

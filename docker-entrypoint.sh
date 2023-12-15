@@ -6,10 +6,9 @@ fi
 
 bundle check || bundle install
 
-RAILS_ENV=development bin/rails db:drop
-RAILS_ENV=development bin/rails db:create
-RAILS_ENV=development bin/rails db:migrate
-RAILS_ENV=development bin/rails db:seed
+bin/rails db:create
+bin/rails db:migrate
+bin/rails db:seed
 
 cron && bundle exec whenever --set 'environment=development' --update-crontab
 

@@ -24,15 +24,11 @@ module Client::Connection
       Faraday.new(options) do |conn|
         conn.response :logger unless Rails.env.test?
         conn.response :raise_error, include_request: true
-        conn.response :json, content_type: /\bjson$/, parser_options: parser_options
+        conn.response :json, content_type: /\bjson$/
         conn.request :json
         conn.request :retry, retry_options
         conn.adapter Faraday.default_adapter
       end
-    end
-
-    def parser_options
-      { symbolize_names: true }
     end
 
     def send_request; end
@@ -91,7 +87,7 @@ module Client::Connection
     end
 
     def catched_faraday_exceptions(err)
-      DevelopmentMailer.some_errors(err).deliver_later
+      DevelopmentMailer.some_errors(err.inspect).deliver_later
       raise Client::Errors::Invalid, err.inspect
     end
 end

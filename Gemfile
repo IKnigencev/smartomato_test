@@ -17,8 +17,6 @@ gem "dry-initializer"
 gem "dry-monads"
 gem "dry-validation"
 
-gem "tailwindcss-rails"
-
 gem "faraday"
 gem "faraday-multipart"
 gem "faraday-retry"
@@ -48,6 +46,7 @@ group :development do
 end
 
 group :test do
+  gem "rails-controller-testing"
   gem "simplecov", require: false
   gem "webmock"
 end

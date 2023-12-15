@@ -14,6 +14,7 @@ module Web
       (0..rand(1..5)).map { order.order_line << init_order_line }
       order.total = order.order_line.sum(&:total)
       order.save!
+      order
     end
 
     private

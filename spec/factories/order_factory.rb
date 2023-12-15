@@ -9,5 +9,7 @@ FactoryBot.define do
     total { Faker::Number.decimal(l_digits: rand(1..5), r_digits: 2) }
     metadata { { orderId: rand(5), formUrl: Faker::Internet.url } }
     status { rand(4) }
+
+    order_line { build_list :order_line, 3 }
   end
 end

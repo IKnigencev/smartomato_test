@@ -51,7 +51,6 @@ module Web
       # @return [Order]
       #
       def find_order
-        puts "create_params #{create_params.inspect}"
         @order = ::Order.find(create_params[:id])
       end
 

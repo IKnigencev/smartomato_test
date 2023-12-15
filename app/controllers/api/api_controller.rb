@@ -5,7 +5,8 @@ module Api
   # Контроллер для взаимодействия с внешними сервисами
   #
   class ApiController < ActionController::API
-    rescue_from Exception, with: :unknown_error
+    rescue_from Exception, with: :unknown_error_callback
+    rescue_from ActiveRecord::RecordNotFound, with: :not_found_callbac
     before_action :ensure_json_request
 
     private
@@ -17,9 +18,11 @@ module Api
         head :not_acceptable and return
       end
 
-      def unknown_error(err)
-        puts err.inspect
-        puts err.backtrace
+      def not_found_callbac
+        head :not_found
+      end
+
+      def unknown_error_callback(err)
         DevelopmentMailer.unknown_error(err)
         head :internal_server_error
       end

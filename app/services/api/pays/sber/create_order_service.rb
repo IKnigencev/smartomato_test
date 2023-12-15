@@ -5,7 +5,7 @@ module Api
     ##
     # Отправка корзины в сбер
     #
-    class Sber::CreateOrderSerivce
+    class Sber::CreateOrderService
       extend Dry::Initializer
       include Dry::Monads[:result]
       include Client::Connection
@@ -21,10 +21,8 @@ module Api
         body = super
         return Failure.new(key: :empty_body) if body.blank?
 
-        validate_body(body)
-      rescue ::Client::Errors::Invalid => e
-        puts "Invalid"
-        puts e.class.name
+        validate_body(JSON.parse(body, symbolize_names: true))
+      rescue ::Client::Errors::Invalid
         Failure.new(key: :something_went_wrong)
       end
 
@@ -60,7 +58,7 @@ module Api
 
         ##
         # Проверка валидности отправки
-        # * errorCode должкн быть 0
+        # * errorCode должен быть 0
         #
         # @param [Hash<Symbol>] body
         #
@@ -68,7 +66,8 @@ module Api
         #
         def valid_response?(body)
           body.present? && body.is_a?(Hash) &&
-            body[:errorCode].to_i.present? && body[:orderId].present? && body[:formUrl].present?
+            body[:errorCode].present? && body[:orderId].present? && body[:formUrl].present? &&
+            body[:errorCode].to_i.zero?
         end
 
         def failure_response(body)

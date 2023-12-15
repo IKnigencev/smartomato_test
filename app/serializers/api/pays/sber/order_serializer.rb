@@ -6,6 +6,8 @@ module Api
     # Объект для передачи в Сбербанк
     #
     class Sber::OrderSerializer
+      class EmptyOrderLine < StandardError; end
+
       include JSONAPI::Serializer
       set_type :sber_order
 
@@ -34,7 +36,10 @@ module Api
 
       # Корзина товаров в заказе
       attribute :orderBundle do |order|
-        order.order_line.map do |item|
+        order_lines = order.order_line
+        raise EmptyOrderLine if order_lines.blank?
+
+        order_lines.map do |item|
           Sber::OrderLineSerializer.new(
             item
           ).serializable_hash[:data][:attributes]

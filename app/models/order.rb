@@ -10,6 +10,8 @@ class Order < ApplicationRecord
   # новый, начата оплата, ошибка оплаты, оплачен
   enum :status, hash_statuses
 
+  scope :started_pay, -> { where(status: :start) }
+
   def human_status
     I18n.t("models.data.order.#{status}")
   end

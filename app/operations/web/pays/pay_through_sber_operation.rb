@@ -43,7 +43,7 @@ module Web
           formUrl: Rails.application.routes.url_helpers.web_pay_path(order.id)
         ) if Rails.env.development?
 
-        ::Api::Pays::Sber::CreateOrderSerivce.new(params: params_request).call
+        ::Api::Pays::Sber::CreateOrderService.new(params: params_request).call
       end
 
       ##
@@ -60,7 +60,7 @@ module Web
       def errors_cath(&block)
         block.call
       rescue Exception => e
-        DevelopmentMailer.unknown_error(e)
+        DevelopmentMailer.unknown_error(e).deliver_later
         Failure.new(key: :unknown_error)
       end
   end

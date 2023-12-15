@@ -35,7 +35,7 @@ module Api
       # @return [Order]
       #
       def find_order
-        @order = ::Order.find(callback_params[:orderNumber])
+        @order = ::Order.started_pay.find(callback_params[:orderNumber])
       end
 
       def callback_service
